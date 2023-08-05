@@ -1,0 +1,50 @@
+pipeline{
+     environment {
+            registry = "anand40090/sp"
+            registryCredential = 'Docker-cred'
+            dockerImage = ''
+    }
+    agent any 
+    tools{
+        maven 'M2'
+    }
+    stages{
+        stage('SCM'){
+            steps{
+                git 'https://github.com/anand40090/springboot-maven-course-micro-svc.git'
+            }
+        }
+        stage('Build'){
+            steps{
+                sh 'mvn clean install'
+            }
+        }
+        stage('Code Scan'){
+            steps{
+                withSonarQubeEnv(installationName: 'sonar-1', credentialsId: 'jenkins-sonar'){
+                    sh 'mvn clean package sonar:sonar'
+                }
+            }
+        }
+        stage('Quality Gates'){
+            steps{
+                 timeout(time: 1, unit: 'HOURS') {
+                     waitForQualityGate abortPipeline: true
+                }
+            }
+        }
+        stage('Docker Image build'){
+            steps{
+               sh 'docker image build -t anand40090/sp":$BUILD_NUMBER" .'
+            }
+        }
+        stage('Image Push'){
+            steps{
+                withCredentials([usernamePassword(credentialsId: 'Docker-cred', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]){
+                    sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
+                     sh "docker push anand40090/sp:$BUILD_NUMBER"
+                }
+            }
+        } 
+    }
+}
