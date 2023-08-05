@@ -26,7 +26,11 @@ Project for blue-green deployment on EKS using jenkins
 
 ![image](https://github.com/anand40090/Eks-Blue-Green-Deployment-Jenkins/assets/32446706/fe9c1f5c-9fcc-4497-9e1f-51c4aea5cbb2)
 
+### Install Kubectl, AWSCLI, EKSCTL in the jenkins instance 
 
+- [Install_AWS_CLI_&_configure](https://sunitabachhav2007.hashnode.dev/jenkins-cicd-with-amazon-eks#heading-install-and-setup-aws-cli)
+- [Install_EKSCTL_KUBECTL](https://sunitabachhav2007.hashnode.dev/jenkins-cicd-with-amazon-eks#heading-install-and-setup-kubectl)
+- [Installing Helm](https://helm.sh/docs/intro/install/)
 
 
 
