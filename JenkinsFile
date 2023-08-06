@@ -45,6 +45,13 @@ pipeline{
                      sh "docker push anand40090/sp:$BUILD_NUMBER"
                 }
             }
-        } 
+        }
+        stage('create the kubeconfig file'){
+            steps{
+                withAWS(credentials: 'aws_cred', region: 'ap-south-1'){
+                    sh 'aws eks update-kubeconfig --name DC'
+                }
+            }
+        }
     }
 }
